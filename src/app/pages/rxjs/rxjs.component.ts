@@ -1,15 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-rxjs',
   templateUrl: './rxjs.component.html',
   styleUrls: ['./rxjs.component.css']
 })
-export class RxjsComponent implements OnInit {
+export class RxjsComponent {
 
-  constructor() { }
+  constructor() {
+    const obs$ = new Observable( observer =>{
+      
+    } );
 
-  ngOnInit(): void {
+
   }
 
 }
