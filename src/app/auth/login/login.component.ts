@@ -13,8 +13,9 @@ import Swal from 'sweetalert2';
 export class LoginComponent {
 
   public LoginForm = this.form.group({
-    email: ['jperezdemonty@live.com.ar', [Validators.required, Validators.email]],
-    password: ['123456', [Validators.required, Validators.minLength(6)]],
+    email: [localStorage.getItem('email') || '', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, Validators.minLength(6)]],
+    remember: [false]
   });
 
   private formSubmitted: boolean = false;
@@ -27,8 +28,12 @@ export class LoginComponent {
       return;
     }
     this.authService.login(this.LoginForm.value)
-      .subscribe((resp) =>{
+      .subscribe(() =>{
+
+        this.LoginForm.get('remember')?.value ? localStorage.setItem("email", this.LoginForm.get('email')?.value) : localStorage.removeItem("email");
+
         this.router.navigate(['/dashboard']);
+
       }, (err) =>{
         Swal.fire({icon: 'error',title: 'Error', text: err.error.error})
       });
