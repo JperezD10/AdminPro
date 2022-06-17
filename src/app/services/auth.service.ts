@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { tap, map, catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
@@ -12,7 +13,7 @@ export class AuthService {
 
   url = environment.base_url;
 
-  constructor(private http:HttpClient) { }
+  constructor(private http:HttpClient, private router: Router) { }
 
   validateToken(): Observable<boolean>{
     const token = localStorage.getItem('token') || '';
@@ -35,5 +36,10 @@ export class AuthService {
         localStorage.setItem('token', resp.token);
       })
     )
+  }
+
+  logout(){
+    localStorage.removeItem('token');
+    this.router.navigateByUrl('/login');
   }
 }
