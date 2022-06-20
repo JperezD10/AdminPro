@@ -5,6 +5,7 @@ import { Observable, of } from 'rxjs';
 import { tap, map, catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Login } from '../interfaces/Login.interface';
+import { User } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ export class AuthService {
 
   url = environment.base_url;
 
+  public loginUser?:User;
   constructor(private http:HttpClient, private router: Router) { }
 
   validateToken(): Observable<boolean>{
@@ -33,6 +35,8 @@ export class AuthService {
     return this.http.post(`${this.url}/Auth`, login)
     .pipe(
       tap( (resp:any) => {
+        const { name,email,image,role,google,id } = resp.user;
+        this.loginUser = new User(name, email, role, image, undefined, google, id);
         localStorage.setItem('token', resp.token);
       })
     )

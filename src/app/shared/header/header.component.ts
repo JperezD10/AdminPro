@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { User } from 'src/app/models/user.model';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -6,11 +8,13 @@ import { AuthService } from 'src/app/services/auth.service';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
 
-  constructor(private authService: AuthService) { }
-
-  ngOnInit(): void {
+  img:SafeResourceUrl;
+  user?: User;
+  constructor(private authService: AuthService, private sanitizer: DomSanitizer) {
+    this.img = this.sanitizer.bypassSecurityTrustResourceUrl('data:image/jpg;base64,' + this.authService.loginUser?.image);
+    this.user = this.authService.loginUser || undefined;
   }
 
   logout():void {

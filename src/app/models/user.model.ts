@@ -9,5 +9,4 @@ export class User{
         public google?: boolean,
         public id?: number,
     ){}
-    
 }
